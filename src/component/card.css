@@ -1,6 +1,6 @@
 /* Style for the card container */
 #box {
-    width: 300px;
+    width: 350px;
     margin: 20px;
     padding: 20px;
     background-color: #f9f9f9;
@@ -8,18 +8,20 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
+   
+   
   }
+
+
+
   
   /* Hover effect to give some interactivity */
-  #box:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
+
   /* Image styling */
   #box img {
     width: 100%;
-    height: auto;
+    height: 250px;
+    
     border-radius: 10px;
   }
   

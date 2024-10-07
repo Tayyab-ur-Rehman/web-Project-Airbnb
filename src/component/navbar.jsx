@@ -22,15 +22,15 @@ return (
 <nav>
     <ul>
          <img src= {props.logo} /> 
-         <input
+         <input id="input"
                     type="text"
                     value={inputValue}
                     onChange={handleChange}
                     placeholder="Type here..."
                 />
-        <li><a href="#about">{props.page1}</a></li>
-        <li><a href="#services">{props.page2}</a></li>
-        <li><a href="#contact">{props.page3}</a></li>
+        <li id="navbar_component"><a href="#about">{props.page1}</a></li>
+        <li id="navbar_component"><a href="#services">{props.page2}</a></li>
+        <li id="navbar_component"><a href="#contact">{props.page3}</a></li>
     </ul>
 </nav>
 

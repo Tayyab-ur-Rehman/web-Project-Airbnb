@@ -3,3 +3,21 @@ body{
   padding:0;
 
 }
+
+.header
+{
+ position :fixed;
+ top:0;
+ margin:0px;
+ width:100%;
+ margin-bottom: 40px;
+
+
+}
+.card_container
+{
+
+  display:flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
