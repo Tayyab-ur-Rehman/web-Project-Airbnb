@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import './style/footer_component.css'
 
 Footer_component.propTypes = {
     data: PropTypes.array.isRequired,
@@ -11,7 +12,7 @@ Footer_component.propTypes = {
 function Footer_component  ({title , data,links}) {
 
 return (
-    <div >
+    <div id='fot_com_inner' >
         <h3>{title}</h3>
         <ul>
           {data.map((item ,index )=>{

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import './navbar.css';
+import './style/navbar.css';
 
 NavBar.propTypes = {
     logo: PropTypes.string.isRequired,
@@ -18,20 +18,27 @@ const handleChange = (event) => {
 };
 
 
+
+
 return (
 <nav>
-    <ul>
+   
          <img src= {props.logo} /> 
+         <div className="search-container">
          <input id="input"
                     type="text"
                     value={inputValue}
                     onChange={handleChange}
                     placeholder="Type here..."
                 />
-        <li id="navbar_component"><a href="#about">{props.page1}</a></li>
-        <li id="navbar_component"><a href="#services">{props.page2}</a></li>
-        <li id="navbar_component"><a href="#contact">{props.page3}</a></li>
-    </ul>
+         <button id="search-btn">Search</button>
+         </div>
+       
+        <div id="right_nav_comp">
+            <div id="navbar_component_comp">{props.page1}</div>
+            <div id="navbar_component_comp">{props.page2}</div>
+            <div id="navbar_component_comp">{props.page3}</div>
+        </div>
 </nav>
 
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import './card.css';
+import './style/card.css';
 
 Card_temp.propTypes = {
     img: PropTypes.string.isRequired,

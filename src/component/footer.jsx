@@ -1,5 +1,5 @@
 import Footer_component from "./footer_component";
-
+import './style/footer.css'
 const column1 = [
     "Help Center",
     "AirCover",
