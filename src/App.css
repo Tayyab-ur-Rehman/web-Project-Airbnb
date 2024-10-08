@@ -3,14 +3,20 @@ body{
   padding:0;
 
 }
+#Scroll_NavBar_container
+{
 
+background-color: white;
+padding-bottom: 20px;
+
+}
 .header
 {
  position :fixed;
  top:0;
  margin:0px;
  width:100%;
- margin-bottom: 40px;
+ padding-bottom: 25px;
 
 
 }
@@ -20,13 +26,13 @@ body{
   display:flex;
   flex-wrap: wrap;
   margin:65px;
-  margin-top: 60px;
+  margin-top: 200px;
   
 }
 
 
 @media screen and (max-width: 600px) {
-  .card_container
+.card_container
 {
 
   display:flex;
