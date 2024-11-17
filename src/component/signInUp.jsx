@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './style/SigninUp.css';
 
-function SignInSignUp() 
-{
-
+function SignInSignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [isSignUp, setIsSignUp] = useState(true); // Toggle between Sign Up and Sign In
@@ -23,15 +22,18 @@ function SignInSignUp()
           email: formData.email,
           password: formData.password,
         });
+        if (response.status === 201 || response.status === 204 || response.status === 200) {
+          const user = { email: formData.email, username: formData.username };
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+
         alert(response.data.message);
       } else {
         // Sign In
-        const response = await axios.post('http://localhost:8080/api/signin',
-           {
+        const response = await axios.post('http://localhost:8080/api/signin', {
           email: formData.email,
           password: formData.password,
-        }
-      );
+        });
         alert('Signed in successfully');
         navigate('/Home');
       }
@@ -45,9 +47,14 @@ function SignInSignUp()
   };
 
   return (
-    <div>
-      <h2>{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="form-container">
+        
+         <div> 
+         <img src='/airbnb.svg'  /> 
+          <h2 className="form-header">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
+
+         </div>
+      <form onSubmit={handleSubmit} className="form">
         {isSignUp && (
           <input
             type="text"
@@ -55,6 +62,7 @@ function SignInSignUp()
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
+            className="input-field"
           />
         )}
         <input
@@ -63,6 +71,7 @@ function SignInSignUp()
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+          className="input-field"
         />
         <input
           type="password"
@@ -70,10 +79,13 @@ function SignInSignUp()
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          className="input-field"
         />
-        <button type="submit">{isSignUp ? 'Sign Up' : 'Sign In'}</button>
+        <button type="submit" className="submit-button">
+          {isSignUp ? 'Sign Up' : 'Sign In'}
+        </button>
       </form>
-      <button onClick={toggleMode}>
+      <button onClick={toggleMode} className="toggle-button">
         {isSignUp ? 'Already have an account? Sign In' : 'Don’t have an account? Sign Up'}
       </button>
     </div>

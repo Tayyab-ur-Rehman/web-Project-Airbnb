@@ -24,6 +24,7 @@ return (
 <nav>
    
          <img src= {props.logo} /> 
+
          <div className="search-container">
          <input id="input"
                     type="text"

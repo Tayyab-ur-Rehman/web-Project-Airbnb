@@ -1,54 +1,138 @@
-/* Style for the card container */
-#box {
-    width: 350px;
-    margin: 20px;
-    padding: 5px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-    
-   
+/* General Styles */
+/* Ensure no unwanted overflow or margins */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+
+
+
+#detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px; /* Maximum width for larger screens */
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#detail-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+#detail-content {
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+#detail-content h2 {
+  font-size: 2rem;
+  color: rgb(252, 108, 116); /* Your primary color */
+  margin: 10px 0;
+}
+
+#detail-content p {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+#detail-info {
+  font-size: 1rem;
+  color: #444;
+  margin: 10px 0;
+}
+
+#detail-info p {
+  margin: 5px 0;
+}
+
+#detail-price {
+  font-size: 1.5rem;
+  color: rgb(252, 108, 116);
+  margin: 20px 0;
+}
+
+#detail-button {
+  padding: 10px 20px;
+  background-color: rgb(252, 108, 116); /* Button color */
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#detail-button:hover {
+  background-color: #ff8a80; /* Lighter shade for hover effect */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  #detail-container {
+    margin: 10px;
+    padding: 10px;
   }
 
-
-
-  
-  /* Hover effect to give some interactivity */
-
-  /* Image styling */
-  #box img {
-    width: 350px;
-    height: 300px;
-    border-radius: 10px;
+  #detail-image {
+    width: 100%;
+    height: auto;
   }
-  
-  /* Title styling */
-  #box h4 {
-    margin-top: 15px;
+
+  #detail-content {
+    padding: 10px;
+  }
+
+  #detail-content h2 {
+    font-size: 1.8rem;
+  }
+
+  #detail-price {
     font-size: 1.2rem;
-    color: #333;
   }
-  
-  /* Text styling */
-  #box p {
-    margin-top: 10px;
-    font-size: 1rem;
-    color: #666;
+
+  #detail-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
-  
-  /* Unordered list (ul) styling */
-  #box ul {
-    list-style-type: none;
-    padding: 0;
+}
+
+/* For Extra Small Screens */
+@media (max-width: 480px) {
+  #detail-container {
+    padding: 5px;
   }
-  
-  /* Responsive design: adjust the width on smaller screens */
-  @media screen and (max-width: 600px) {
-    #box {
-      width: 100%;
-      margin: 10px 0;
-    }
+
+  #detail-image {
+    width: 100%;
+    height: auto;
   }
-  
+
+  #detail-content h2 {
+    font-size: 1.5rem;
+  }
+
+  #detail-price {
+    font-size: 1.1rem;
+  }
+
+  #detail-button {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+}

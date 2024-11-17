@@ -13,7 +13,7 @@ return(
 <Router>
 <div>
     <Routes>
-    <Route exact path="/" element ={<Home/>}></Route>
+    <Route exact path="/" element ={<SignInSignUp/>}></Route>
     <Route exact path="/Home" element ={<Home/>}></Route>
     <Route exact path="/Detail/:id" element={<DetailPage />} />
 
