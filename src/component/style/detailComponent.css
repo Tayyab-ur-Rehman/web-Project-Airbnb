@@ -1,0 +1,54 @@
+/* Style for the card container */
+#box {
+    width: 350px;
+    margin: 20px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    
+   
+  }
+
+
+
+  
+  /* Hover effect to give some interactivity */
+
+  /* Image styling */
+  #box img {
+    width: 350px;
+    height: 300px;
+    border-radius: 10px;
+  }
+  
+  /* Title styling */
+  #box h4 {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  /* Text styling */
+  #box p {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /* Unordered list (ul) styling */
+  #box ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* Responsive design: adjust the width on smaller screens */
+  @media screen and (max-width: 600px) {
+    #box {
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
+  

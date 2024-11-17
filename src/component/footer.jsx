@@ -34,9 +34,9 @@ function Footer()
 return (
 <>
 <div id="footerInfoContainer">
-    <Footer_component title="Support"  data={column1}/>
-    <Footer_component title="hosting" data={column2}/>
-    <Footer_component title="airbnb" data={column3}/>
+    <Footer_component key={1} title="Support"  data={column1}/>
+    <Footer_component key={2} title="hosting" data={column2}/>
+    <Footer_component key={3} title="airbnb" data={column3}/>
 </div>
 
 

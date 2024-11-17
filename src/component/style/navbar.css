@@ -1,12 +1,12 @@
 /* NavBar.css */
 nav {
     background-color: white;
-    padding: 20px;
-    margin: 0px;
+    padding: 10px;
+    margin: 00px;
     display: flex;
     color: black;
     width:100%;
-    justify-content: space-between;
+    justify-content: space-around;
     
 }
 #input {
@@ -15,7 +15,7 @@ nav {
     padding: 10px 20px;  /* Adjusted padding for a bigger size */
     font-size: 18px;  /* Increase the font size */
     width: 300px;  /* Set the width of the input */
-    height:40px;
+    height:30px;
     outline: none;
 }
 
@@ -32,7 +32,7 @@ nav {
 }
 
 #search-btn:hover {
-    background-color: #555;
+    background-color: rgb(252, 108, 116);
 }
 
 /* Container to align input and button */
@@ -44,6 +44,8 @@ nav {
 {
 
     display: flex;
+   
+   
 }
 
 nav ul {
@@ -67,11 +69,9 @@ nav ul li a:hover {
 }
 
 
-#navbar_component_comp
+.link_comp
 {
-
-   padding:8px;
-   margin-right:15px;
+   padding:20px;
 }
 
 
@@ -87,8 +87,8 @@ nav ul li a:hover {
         outline: none;
     }
     nav {
-            margin: 0;
-            padding:0;
+            margin: 00;
+            padding:00;
             justify-content:center;
     }
     .search--container
@@ -100,22 +100,19 @@ nav ul li a:hover {
         color: white;
         border: none;
         border-radius: 5px;
-        padding: 5px 5px;
+        padding: 0px 0px;
         margin-left: 4px;
         font-size: 10px;
         cursor: pointer;
     }
 #right_nav_comp
 {
-
-    position: absolute;
-    left: -9999px;
+    
+   padding:0px;
 }
-#navbar_component_comp
+.link_comp
 {
-
-   padding:8px;
-   margin-right:15px;
+   padding:10px;
 }  
     
   }

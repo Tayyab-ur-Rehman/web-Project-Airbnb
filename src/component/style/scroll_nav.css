@@ -4,8 +4,8 @@
     display:flex;
     background-color: white;
     border-radius: 20px;
-    margin-right:90px;
-    margin-left:90px;
+    margin-right:100px;
+    margin-left:100px;
     overflow: scroll;
     gap:20px;
     padding-bottom: 20px;

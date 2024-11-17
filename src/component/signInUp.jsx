@@ -18,7 +18,7 @@ function SignInSignUp()
     try {
       if (isSignUp) {
         // Sign Up
-        const response = await axios.post('http://localhost:5000/api/signup', {
+        const response = await axios.post('http://localhost:8080/api/signup', {
           username: formData.username,
           email: formData.email,
           password: formData.password,
@@ -26,7 +26,7 @@ function SignInSignUp()
         alert(response.data.message);
       } else {
         // Sign In
-        const response = await axios.post('http://localhost:5000/api/signin',
+        const response = await axios.post('http://localhost:8080/api/signin',
            {
           email: formData.email,
           password: formData.password,

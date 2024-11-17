@@ -35,9 +35,9 @@ return (
          </div>
        
         <div id="right_nav_comp">
-            <div id="navbar_component_comp">{props.page1}</div>
-            <div id="navbar_component_comp">{props.page2}</div>
-            <div id="navbar_component_comp">{props.page3}</div>
+            <div className="link_comp">{props.page1}</div>
+            <div className="link_comp">{props.page2}</div>
+            <div className="link_comp">{props.page3}</div>
         </div>
 </nav>
 
