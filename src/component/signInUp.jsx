@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './style/SigninUp.css';
 
-function SignInSignUp() {
+function SignInSignUp() { 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [isSignUp, setIsSignUp] = useState(true); // Toggle between Sign Up and Sign In
