@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 dotenv.config(); 
 const Listing = require('./models/listing.js'); // Import the Item model
 const Host = require('./models/host.js'); // Import the Item model
@@ -24,6 +25,7 @@ function areDateRangesOverlapping(start1, end1, start2, end2) {
 
 const app = express();
 app.use(express.json())
+app.use(cors())
 
 mongoose.connect(URI);
 
@@ -113,11 +115,27 @@ mongoose.connect(URI);
           res.status(400).json({ message: error.message });
         }
       });
-      //get all listings
-    app.get("/listing", async (req, res) => {
+      //get all listings using hostId
+      app.get("/listing/host/:hostId", async (req, res) => {
         try {
           //
-          const listings = await Listing.find({});
+          const hostIdGiven =req.params.hostId;
+          const listings = await Listing.find({hostId:hostIdGiven});
+          if(!listings)
+              res.status(404).json({message:'could not find specified host'});
+          res.status(200).json(listings);
+        } catch (error) {
+          // Handle errors (e.g., database connection issues)
+          res.status(500).json({ message: error.message });
+        }
+      });
+
+
+      //get all listings by category 
+    app.get("/listing", async (req, res) => {
+        try {
+          const categoryGiven=req.body.category;
+          const listings = await Listing.find({category:categoryGiven});
           
           res.status(200).json(listings);
         } catch (error) {
@@ -140,7 +158,7 @@ mongoose.connect(URI);
           res.status(500).json({ message: error.message });
         }
       });
-
+      
 
     //for user updating the booking and return the booking object back to the frontend 
       app.post("/booking", async (req, res) => {
@@ -155,7 +173,7 @@ mongoose.connect(URI);
     
             // Update the booking field to true
 
-            const OverlappingDates=await Booking.find({userid:userid1 ,listingid:listingId1});
+            const OverlappingDates=await Booking.find({listingid:listingId1});
             OverlappingDates.forEach((booking) => {
             if(areDateRangesOverlapping(booking.checkIn,booking.checkOut,checkIn1,checkOut1))
             {
@@ -168,16 +186,38 @@ mongoose.connect(URI);
                listingId:listingId1,
                userid:userid1,
                checkIn:checkIn1,
-               checkOut:checkOut2,
+               checkOut:checkOut1,
             });
-            const output=book.save();
+            const output=await book.save();
 
             res.status(201).json({ bookingId: output });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     });   
-  
+    //get all booking of a host using host id 
+    app.get("/booking/host/:hostId", async (req, res) => {
+      const hostId = req.params.hostId;
+      try {
+        const allListings = await Listing.find({ hostId: hostId });
+        const listingIds = allListings.map(listing => listing._id);
+        const allBookings = await Booking.find({ listingId: { $in: listingIds } });
+    
+        res.status(200).json(allBookings);
+      } catch (error) {
+        res.status(500).json({ message: "Error fetching bookings", error });
+      }
+    });
+    //get all booking of a user using user id
+    app.get("/booking/user/:userId",async (req,res)=>{
+      const userId =req.params.userId;
+      const allBooking= await Booking.find({userId:userId});
+        if(!allBooking)
+          res.status(404).json({message:'No booking of listing for specified user'});
+        res.status(200).json(allBooking);
+     });
+    
+       
     
       
       
