@@ -5,7 +5,7 @@ import Scroll_NavBar from './component/scroll_nav.jsx'
 import './App.css'
 import Footer  from './component/footer.jsx';
 import axios from 'axios'; // Import Axios
-
+import {Store} from './dataStorage.js';
 
 
 
@@ -24,11 +24,11 @@ return <style>{styles}</style>;
 
 function Home() {
   
-  const [properties, setProperties] = useState([]);
+  const {listings, setlistings} = Store();
   useEffect(() => {
     const fetchData = async () => {
-      var p = await axios.get('http://localhost:8080/api/data');
-      setProperties(p.data);
+      var p = await axios.get('http://localhost:3000/listing');
+      setlistings(p.data);
       console.log(p.data);
     };
   
@@ -49,9 +49,9 @@ function Home() {
       </div>
       <div className="card_container">
         
-       {properties.map((item, index)=>{   
-            return <Card_temp  key={index} id={index} //may have properties own key 
-            text= {item.text} img={item.image} title={item.location} />
+       {listings.map((item, index)=>{   
+            return <Card_temp  key={index} id={item._id} //may have properties own key 
+            text= {item.about} img={item.image} title={item.location} />
        }) }
        </div>
       <div>

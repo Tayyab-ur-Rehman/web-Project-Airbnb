@@ -13,11 +13,15 @@ const bookingSchema = new mongoose.Schema({
   },
   checkIn: {
     type: Date,
-   
+
   },
   checkOut: {
     type: Date,
-   
+
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -5,8 +5,13 @@ const listingSchema = new mongoose.Schema({
   hostId: { type: mongoose.Schema.Types.ObjectId, ref: "Host" },
   price: { type: Number, required: true },
   location: { type: String },
+  about: { type: String },
   image:{type:String},
-  category: { type: String, required: true }
+  bedrooms: { type: Number },
+  bathrooms: { type: Number },
+  guests: { type: Number },
+  category: { type: String, required: true },
+  isAdmin: { type: Boolean, default:false }
 });
 
 module.exports = mongoose.model("Listing", listingSchema);

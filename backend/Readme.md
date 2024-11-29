@@ -1,57 +1,106 @@
 # To Run
 `npm run dev`
-# **Routes**
-## 1. **POST /host**
-   - **What it does**: Creates a new host.
-   - **What it requires**: `name` and `email` in the request body.
-   - **What it returns**: The created host object with a 201 status code.
+# Routes Documentation
 
-## 2. **GET /host**
-   - **What it does**: Fetches a host by email.
-   - **What it requires**: `email` in the request body.
-   - **What it returns**: Host object if found, 200 status code.
+## Host Routes
 
-## 3. **POST /user**
-   - **What it does**: Creates a new user.
-   - **What it requires**: `name` and `email` in the request body.
-   - **What it returns**: The created user object with a 201 status code.
+### `POST /host`
+1. **Purpose**: Create a new host.
+2. **Inputs**: `name`, `email` (in request body).
+3. **Returns**: Saved host object (`201` status).
 
-## 4. **GET /user**
-   - **What it does**: Fetches a user by email.
-   - **What it requires**: `email` in the request body.
-   - **What it returns**: User object if found, 200 status code.
+### `GET /host`
+1. **Purpose**: Retrieve a host by email.
+2. **Inputs**: `email` (in request body).
+3. **Returns**: Host object (`200` status) or error.
 
-## 5. **POST /listing**
-   - **What it does**: Creates a new listing.
-   - **What it requires**: `title`, `hostId`, `location`, `price`, and `image` in the request body.
-   - **What it returns**: The created listing object with a 201 status code.
+---
 
-## 6. **GET /listing/host/:hostId**
-   - **What it does**: Fetches all listings by a specific host.
-   - **What it requires**: `hostId` as a URL parameter.
-   - **What it returns**: Array of listings if found, 200 status code.
+## User Routes
 
-## 7. **GET /listing**
-   - **What it does**: Fetches listings by category.
-   - **What it requires**: `category` in the request body.
-   - **What it returns**: Array of listings matching the category, 200 status code.
+### `POST /user`
+1. **Purpose**: Create a new user.
+2. **Inputs**: `name`, `email` (in request body).
+3. **Returns**: Saved user object (`201` status).
 
-## 8. **GET /listing/:id**
-   - **What it does**: Fetches a listing by its ID.
-   - **What it requires**: `id` as a URL parameter.
-   - **What it returns**: The listing object if found, 200 status code.
+### `GET /user`
+1. **Purpose**: Retrieve a user by email.
+2. **Inputs**: `email` (in request body).
+3. **Returns**: User object (`200` status) or error.
 
-## 9. **POST /booking**
-   - **What it does**: Creates a new booking.
-   - **What it requires**: `listingId`, `userId`, `checkIn`, and `checkOut` in the request body.
-   - **What it returns**: The created booking object with a 201 status code.
+---
 
-## 10. **GET /booking/host/:hostId**
-   - **What it does**: Fetches all bookings for a host's listings.
-   - **What it requires**: `hostId` as a URL parameter.
-   - **What it returns**: Array of bookings related to the host's listings, 200 status code.
+## Listing Routes
 
-## 11. **GET /booking/user/:userId**
-   - **What it does**: Fetches all bookings for a user.
-   - **What it requires**: `userId` as a URL parameter.
-   - **What it returns**: Array of bookings made by the user, 200 status code.
+### `POST /listing/host`
+1. **Purpose**: Add a listing for a host.
+2. **Inputs**: `title`, `hostId`, `location`, `price`, `image` (in request body).
+3. **Returns**: Saved listing object (`201` status).
+
+### `DELETE /listings/host/:listingid`
+1. **Purpose**: Delete a listing by ID.
+2. **Inputs**: `listingid` (as URL parameter).
+3. **Returns**: Success message (`200` status).
+
+### `GET /listing/host/:hostId`
+1. **Purpose**: Get all listings of a host.
+2. **Inputs**: `hostId` (as URL parameter).
+3. **Returns**: Array of listings (`200` status).
+
+### `GET /listing`
+1. **Purpose**: Get all listings by category.
+2. **Inputs**: `category` (in request body).
+3. **Returns**: Array of listings (`200` status).
+
+### `GET /listing/:id`
+1. **Purpose**: Get a listing by ID.
+2. **Inputs**: `id` (as URL parameter).
+3. **Returns**: Listing object (`200` status).
+
+---
+
+## Booking Routes
+
+### `POST /booking`
+1. **Purpose**: Create a booking for a listing.
+2. **Inputs**: `listingid`, `userid`, `checkIn`, `checkOut` (in request body).
+3. **Returns**: Booking ID (`201` status).
+
+### `GET /booking/host/:hostId`
+1. **Purpose**: Get bookings of a host.
+2. **Inputs**: `hostId` (as URL parameter).
+3. **Returns**: Array of bookings (`200` status).
+
+### `GET /booking/user/:userId`
+1. **Purpose**: Get bookings of a user.
+2. **Inputs**: `userId` (as URL parameter).
+3. **Returns**: Array of bookings (`200` status).
+
+---
+
+## Admin Routes
+
+### `GET /api/admin/listings`
+1. **Purpose**: Fetch all listings.
+2. **Inputs**: None.
+3. **Returns**: Array of all listings (`200` status).
+
+### `GET /api/admin/mylistings`
+1. **Purpose**: Fetch all admin listings.
+2. **Inputs**: None.
+3. **Returns**: Array of admin listings (`200` status).
+
+### `POST /admin/listings`
+1. **Purpose**: Add a listing as an admin.
+2. **Inputs**: `title`, `location`, `price`, `image`, `category` (in request body).
+3. **Returns**: Saved listing object (`201` status).
+
+### `DELETE /admin/listings/:id`
+1. **Purpose**: Delete an admin listing by ID.
+2. **Inputs**: `id` (as URL parameter).
+3. **Returns**: Success message (`200` status).
+
+### `GET /admin/bookings/:bookingid`
+1. **Purpose**: Fetch all bookings.
+2. **Inputs**: None.
+3. **Returns**: Array of all bookings (`200` status).

@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
     unique: true, // Ensure no duplicate emails
     match: [/.+@.+\..+/, "Please enter a valid email address"], // Validate email format
   },
+  name: {
+    type: String,
+    required: true,
+  },
   password: {
     type: String,
     required: true, // Ensure password is provided

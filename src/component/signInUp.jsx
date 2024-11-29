@@ -17,8 +17,8 @@ function SignInSignUp() {
     try {
       if (isSignUp) {
         // Sign Up
-        const response = await axios.post('http://localhost:8080/api/signup', {
-          username: formData.username,
+        const response = await axios.post('http://localhost:3000/user/signup', {
+          name: formData.username,
           email: formData.email,
           password: formData.password,
         });
@@ -26,16 +26,27 @@ function SignInSignUp() {
           const user = { email: formData.email, username: formData.username };
           localStorage.setItem('user', JSON.stringify(user));
         }
-
-        alert(response.data.message);
+        else
+        {
+          alert(response.data.message);
+        }
+       
       } else {
         // Sign In
-        const response = await axios.post('http://localhost:8080/api/signin', {
+        console.log(formData.password);
+        const response = await axios.post('http://localhost:3000/user/signin', {
           email: formData.email,
           password: formData.password,
         });
-        alert('Signed in successfully');
-        navigate('/Home');
+        if(response.status === 200){
+
+           navigate('/Home');
+        }
+        
+          alert(response.data.message);
+        
+
+
       }
     } catch (error) {
       console.error(`${isSignUp ? 'Sign up' : 'Sign in'} error:`, error.response ? error.response.data : error.message);

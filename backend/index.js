@@ -10,6 +10,28 @@ const User = require('./models/user.js'); // Import the Item model
 
 const URI = process.env.MONGO_URI;
 console.log('MongoDB URI:', URI);
+const categories = [
+  "Beachfront",
+  "Luxury Villas",
+  "Rustic Cabins",
+  "Urban Lofts",
+  "Pet-Friendly",
+  "Tiny Homes",
+  "Treehouses",
+  "Farm Stays",
+  "City Apartments",
+  "Ski Chalets",
+  "Lakefront",
+  "Eco-Friendly",
+  "Historic Homes",
+  "Business Stays",
+  "Adventure Hubs",
+  "Family-Friendly",
+  "Romantic Getaways",
+  "Mountain Retreats",
+  "Glamping",
+  "Budget Stays"
+];
 
 
 function areDateRangesOverlapping(start1, end1, start2, end2) {
@@ -28,6 +50,12 @@ app.use(express.json())
 app.use(cors())
 
 mongoose.connect(URI);
+   
+    //  categories.forEach(async (category) => {
+    //     const existingCategory = await Listing.find({ category:category });
+    //     console.log(category);
+    //     console.log(existingCategory.length);
+    //  });
 
     app.post("/host", async (req, res) => {
         
@@ -36,6 +64,7 @@ mongoose.connect(URI);
           const host = new Host({
             name: req.body.name,
             email: req.body.email,
+            password: req.body.password
           });
       
           // Save the host to the database
@@ -62,14 +91,17 @@ mongoose.connect(URI);
 
 
 
-      app.post("/user", async (req, res) => {
+      app.post("/user/signup", async (req, res) => {
         try {
-          // Create a new host using the request body
+          const sameEmail=await User.findOne({email:req.body.email});
+          
+          console.log("signup");
+
           const user = new User({
             name: req.body.name,
             email: req.body.email,
+            password: req.body.password,
           });
-      
           // Save the host to the database
           const savedUser = await user.save();
       
@@ -80,11 +112,13 @@ mongoose.connect(URI);
           res.status(400).json({ message: error.message });
         }
       });
-    app.get("/user", async (req, res) => {
+    app.post("/user/signin", async (req, res) => {
         try {
-          //
-          const user = await User.findOne({email:req.body.email});
-          
+          const GivenEmail=req.body.email;
+          const GivenPassword=req.body.password;
+          const user = await User.findOne({email:GivenEmail});
+          if(user.password!=GivenPassword)
+            return res.status(401).json({message:'Wrong password'});
           res.status(200).json(user);
         } catch (error) {
           // Handle errors (e.g., database connection issues)
@@ -93,8 +127,9 @@ mongoose.connect(URI);
       });
 
 
-      //post a single listing
-      app.post("/listing", async (req, res) => {
+
+      //post a single listing by host
+      app.post("/listing/host", async (req, res) => {
         try {
           // Create a new host using the request body
           const listing = new Listing({
@@ -115,10 +150,24 @@ mongoose.connect(URI);
           res.status(400).json({ message: error.message });
         }
       });
+      app.delete("/listing/host/:listingid", async (req, res) => {
+        const listingId = req.params.listingid;
+        try {
+          const deletedListing = await Listing.findByIdAndDelete(listingId);
+      
+          if (!deletedListing) {
+            return res.status(404).json({ message: "Listing not found" });
+          }
+      
+          res.status(200).json({ message: "Listing deleted successfully" });
+        } catch (error) {
+          res.status(500).json({ message: "Error deleting listing", error });
+        }
+      });
       //get all listings using hostId
       app.get("/listing/host/:hostId", async (req, res) => {
         try {
-          //
+          
           const hostIdGiven =req.params.hostId;
           const listings = await Listing.find({hostId:hostIdGiven});
           if(!listings)
@@ -129,13 +178,30 @@ mongoose.connect(URI);
           res.status(500).json({ message: error.message });
         }
       });
+     
+      
 
 
-      //get all listings by category 
-    app.get("/listing", async (req, res) => {
+
+
+      app.get("/listing", async (req, res) => {
         try {
-          const categoryGiven=req.body.category;
+          const listings = await Listing.find({});
+          
+          res.status(200).json(listings);
+        } catch (error) {
+          // Handle errors (e.g., database connection issues)
+          res.status(500).json({ message: error.message });
+        }
+      });
+      //get all listings by category for user 
+    app.get("/listing/category/:category", async (req, res) => {
+        try {
+          const categoryGiven=req.params.category;
+          console.log(categoryGiven);
+
           const listings = await Listing.find({category:categoryGiven});
+          console.log(listings);
           
           res.status(200).json(listings);
         } catch (error) {
@@ -158,6 +224,7 @@ mongoose.connect(URI);
           res.status(500).json({ message: error.message });
         }
       });
+
       
 
     //for user updating the booking and return the booking object back to the frontend 
@@ -216,7 +283,87 @@ mongoose.connect(URI);
           res.status(404).json({message:'No booking of listing for specified user'});
         res.status(200).json(allBooking);
      });
-    
+
+
+
+
+
+// Fetch all listings (admin view)
+app.get("/api/admin/listing", async (req, res) => {
+  try {
+    const allListings = await Listing.find({});
+    res.status(200).json(allListings);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching listings", error });
+  }
+});
+//get only admins listings
+app.get("/api/admin/mylisting", async (req, res) => {
+  try {
+    const allListings = await Listing.find({isAdmin:true});
+    res.status(200).json(allListings);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching listings", error });
+  }
+});
+// Add a new listing for admin
+app.post("/admin/listing", async (req, res) => {
+  try {
+    const { title, location, price, image, category } = req.body;
+
+    // Validate required fields
+    if (!title|| !price || !category||!location || !image) {
+      return res.status(400).json({ message: "Required fields are missing" });
+    }
+
+    // Create and save a new listing
+    const newListing = new Listing({
+      title,
+      hostId:null,
+      location,
+      price,
+      image,
+      category,
+      isAdmin:true
+    });
+
+    const savedListing = await newListing.save();
+    res.status(201).json(savedListing);
+  } catch (error) {
+    res.status(500).json({ message: "Error adding new listing", error });
+  }
+});
+// Delete a listing by ID (admin only)
+app.delete("/admin/listing/:id", async (req, res) => {
+  const listingId = req.params.id;
+  try {
+    const deletedListing = await Listing.findByIdAndDelete(listingId);
+
+    if (!deletedListing) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    res.status(200).json({ message: "Listing deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting listing", error });
+  }
+});
+
+
+
+
+// View all bookings (admin overview)
+app.get("/admin/bookings/:bookingid", async (req, res) => {
+  try {
+    const allBookings = await Booking.find({})
+     
+
+    res.status(200).json(allBookings);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching bookings", error });
+  }
+});
+
        
     
       

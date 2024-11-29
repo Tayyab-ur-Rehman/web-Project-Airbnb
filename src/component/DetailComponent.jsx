@@ -1,18 +1,9 @@
 import PropTypes from 'prop-types';
 import './style/detailComponent.css';
+import { useNavigate } from 'react-router-dom';
 
-Detail_temp.propTypes = {
-    img: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    guests: PropTypes.number.isRequired,
-    bedrooms: PropTypes.number.isRequired,
-    bathrooms: PropTypes.number.isRequired,
-    costPerNight: PropTypes.number.isRequired,
-  };
-
-function Detail_temp({ img, location, text, guests, bedrooms, bathrooms, costPerNight }) {
+function Detail_temp({ img, location, text, guests, bedrooms, bathrooms, costPerNight, id }) {
+  const navigate = useNavigate();
   return (
     <div id="detail-container">
       <img src={img} alt={location} id="detail-image" />
@@ -26,8 +17,8 @@ function Detail_temp({ img, location, text, guests, bedrooms, bathrooms, costPer
         </div>
         <h3 id="detail-price">Cost Per Night: ${costPerNight}</h3>
         <button id="detail-button" 
-        //onClick={} link to a 3rd page 
-        >Book This Place</button>
+        onClick={()=>navigate(`/Booking/${id}`)}
+        >Book Now</button>
       </div>
     </div>
   );

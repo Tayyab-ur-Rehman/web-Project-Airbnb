@@ -1,32 +1,33 @@
 import Footer_component from "./footer_component";
 import './style/footer.css'
-const column1 = [
-    "Help Center",
+const footerData = 
+[
+   [ "Help Center",
     "AirCover",
     "Anti-discrimination",
     "Disability support",
     "Cancellation options",
     "Report neighborhood concern",
     "Airbnb your home",
-  ];
-  
-  const column2 = [
+],
+  [
     "AirCover for Hosts",
     "Hosting resources",
     "Community forum",
     "Hosting responsibly",
     "Airbnb-friendly apartments",
     "Join a free Hosting class",
-  ];
+  ],
   
-  const column3 = [
+  [
     "Newsroom",
     "New features",
     "Careers",
     "Investors",
     "Gift cards",
     "Airbnb.org emergency stays",
-  ];
+  ]
+];
   
 function Footer()
 {
@@ -34,9 +35,9 @@ function Footer()
 return (
 <>
 <div id="footerInfoContainer">
-    <Footer_component key="1" title="Support"  data={column1}/>
-    <Footer_component key="2" title="hosting" data={column2}/>
-    <Footer_component key="2" title="airbnb" data={column3}/>
+   { footerData.map((column, index) => (
+    <Footer_component key={index} title="Support"  data={column}/>))
+}
 </div>
 
 
