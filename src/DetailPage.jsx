@@ -4,11 +4,14 @@ import Footer from './component/footer.jsx';
 import Detail_temp from './component/DetailComponent.jsx';
 import Navbar from './component/navbar.jsx';
 import axios from 'axios';
+import {Store} from './dataStorage.js';
+import './component/style/DetailPage.css';
+
 
 function DetailPage() {
     const { id } = useParams();
     const [item, setItem] = useState({});
-    const user = JSON.parse(localStorage.getItem('user'));
+    const {current}= Store();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,7 +36,7 @@ function DetailPage() {
                 bedrooms={item.bedrooms}
                 bathrooms={item.bathrooms}
                 costPerNight={item.price}
-                email={user.email}
+                email={current.email}
                 id={id}
             />
             <Footer/>

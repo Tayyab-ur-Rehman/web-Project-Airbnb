@@ -23,6 +23,10 @@ const bookingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  amount: {
+    type: Number,
+    default: 10,
+  },
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);

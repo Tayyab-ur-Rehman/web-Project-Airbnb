@@ -2,13 +2,35 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 dotenv.config(); 
 const Listing = require('./models/listing.js'); // Import the Item model
 const Host = require('./models/host.js'); // Import the Item model
 const Booking = require('./models/booking.js'); // Import the Item model
 const User = require('./models/user.js'); // Import the Item model
 
-const URI = process.env.MONGO_URI;
+function calculateDaysBetween(startDate, endDate) {
+  // Ensure that the input is in the proper Date format
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // Validate if the dates are valid
+  if (isNaN(start) || isNaN(end)) {
+      throw new Error("Invalid date format. Please provide valid dates.");
+  }
+
+  // Calculate the difference in milliseconds
+  const diffInMillis = end - start;
+
+  // Convert milliseconds into days (1 day = 24 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+  const days = diffInMillis / (1000 * 60 * 60 * 24);
+
+  return Math.abs(Math.floor(days)); // Use Math.abs to handle negative date ranges
+}
+
+
+const URI = process.env.MONGO_URI; 
 console.log('MongoDB URI:', URI);
 const categories = [
   "Beachfront",
@@ -51,12 +73,28 @@ app.use(cors())
 
 mongoose.connect(URI);
    
-    //  categories.forEach(async (category) => {
-    //     const existingCategory = await Listing.find({ category:category });
-    //     console.log(category);
-    //     console.log(existingCategory.length);
-    //  });
+    
 
+    app.get("/auth/token", async (req, res) => {
+      try {
+        const token = req.headers.authorization.split(" ")[1];
+        console.log(token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+        const isExpired = Date.now() >= decoded.exp * 1000;
+        if (isExpired) {
+          return res.status(401).send("Token expired");
+        }
+    
+        const user = await User.findById(decoded.id);
+        console.log(user);
+        res.status(200).json({ user });
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Something went wrong");
+      }
+    });
+    
     app.post("/host", async (req, res) => {
         
         try {
@@ -96,11 +134,12 @@ mongoose.connect(URI);
           const sameEmail=await User.findOne({email:req.body.email});
           
           console.log("signup");
+          const hash=await bcrypt.hash(req.body.password,10);
 
           const user = new User({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password: hash,
           });
           // Save the host to the database
           const savedUser = await user.save();
@@ -117,9 +156,21 @@ mongoose.connect(URI);
           const GivenEmail=req.body.email;
           const GivenPassword=req.body.password;
           const user = await User.findOne({email:GivenEmail});
-          if(user.password!=GivenPassword)
+          if(!user)
+            return res.status(401).json({message:'User not found'});
+          
+          const match=await bcrypt.compare(GivenPassword,user.password);
+
+          if(!match)
             return res.status(401).json({message:'Wrong password'});
-          res.status(200).json(user);
+          console.log(user);
+          
+          const token=jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:'1h'});  
+          console.log(user);
+          
+          res.status(200).json({user,token});
+
+
         } catch (error) {
           // Handle errors (e.g., database connection issues)
           res.status(500).json({ message: error.message });
@@ -234,30 +285,34 @@ mongoose.connect(URI);
             const userid1 = req.body.userid; // Extract the listing ID from the request body
             const checkIn1= req.body.checkIn; // Extract the listing ID from the request body
             const checkOut1 = req.body.checkOut; // Extract the listing ID from the request body
-            if (!listingId1) {
-                return res.status(400).json({ error: "Listing ID is required" });
-            }
-    
+            const cost = req.body.cost; // Extract the listing ID from the request body
+           
+              console.log(listingId1);
+              console.log(userid1);
+              console.log(checkIn1);
+              console.log(checkOut1);
             // Update the booking field to true
 
-            const OverlappingDates=await Booking.find({listingid:listingId1});
-            OverlappingDates.forEach((booking) => {
-            if(areDateRangesOverlapping(booking.checkIn,booking.checkOut,checkIn1,checkOut1))
-            {
-              res.status(200).json({message :'Not avaliable at this time slot'});
-              return;
-            }
-            });
+            // const OverlappingDates=await Booking.find({listingid:listingId1});
+            // OverlappingDates.forEach((booking) => {
+            // if(areDateRangesOverlapping(booking.checkIn,booking.checkOut,checkIn1,checkOut1))
+            // {
+            //   res.status(200).json({message :'Not avaliable at this time slot'});
 
+            //   return;
+            // }
+            // });
+            const amount1 =cost*calculateDaysBetween(checkIn1,checkOut1);
             const book=Booking({
                listingId:listingId1,
-               userid:userid1,
+               userId:userid1,
                checkIn:checkIn1,
                checkOut:checkOut1,
+               amount:amount1
             });
             const output=await book.save();
-
-            res.status(201).json({ bookingId: output });
+           console.log("booked");
+            res.status(201).json({ output });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -279,9 +334,14 @@ mongoose.connect(URI);
     app.get("/booking/user/:userId",async (req,res)=>{
       const userId =req.params.userId;
       const allBooking= await Booking.find({userId:userId});
+
         if(!allBooking)
           res.status(404).json({message:'No booking of listing for specified user'});
-        res.status(200).json(allBooking);
+        const listingIds = [...new Set(allBooking.map((booking) => booking.listingId))];
+
+        // Fetch all listings using the extracted IDs
+        const allListing = await Listing.find({ _id: { $in: listingIds } });
+        res.status(200).json({allBooking,allListing});
      });
 
 

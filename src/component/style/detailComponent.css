@@ -1,9 +1,8 @@
 /* General Styles */
 /* Ensure no unwanted overflow or margins */
 body, html {
-  margin: 0;
+  margin: 10;
   padding: 0;
-  height: 100%;
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
@@ -14,9 +13,8 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1000px; /* Maximum width for larger screens */
-  margin: 20px auto;
+  
+  margin: 40px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 12px;
@@ -25,8 +23,7 @@ body, html {
 }
 
 #detail-image {
-  width: 100%;
-  height: auto;
+ 
   border-radius: 12px;
   object-fit: cover;
 }

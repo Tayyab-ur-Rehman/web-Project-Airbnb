@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import './style/navbar.css';
-
+import { useNavigate } from 'react-router-dom';
 NavBar.propTypes = {
     logo: PropTypes.string.isRequired,
     page1: PropTypes.string.isRequired,
@@ -11,10 +11,11 @@ NavBar.propTypes = {
 
 
 function NavBar(props) {
+    const navigate =useNavigate();
 
-const [inputValue, setInputValue] = useState('');
-const handleChange = (event) => {
-    setInputValue(event.target.value); // Update state
+    const [inputValue, setInputValue] = useState('');
+    const handleChange = (event) => {
+        setInputValue(event.target.value); // Update state
 };
 
 
@@ -38,7 +39,7 @@ return (
         <div id="right_nav_comp">
             <div className="link_comp">{props.page1}</div>
             <div className="link_comp">{props.page2}</div>
-            <div className="link_comp">{props.page3}</div>
+            <buttom onClick={()=>{navigate('/profile')}}className="link_comp">{"profile"} </buttom>
         </div>
 </nav>
 

@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import './style/bookingForm.css'; // Make sure to style the component as needed
-
-const BookingForm = ({ img, location, text, guests, bedrooms, bathrooms, costPerNight }) => {
+import axios from "axios" ;
+const BookingForm = ({ img, location, text, guests, bedrooms, bathrooms, costPerNight ,id,userid}) => {
   // State to manage form inputs
   const [fullName, setFullName] = useState('');
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
+  
+  
+  const performBooking = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/booking', {
+        listingid: id,
+        userid: userid,
+        checkIn: checkInDate,
+        checkOut: checkOutDate,
+        cost: costPerNight,
+      });
+
+      if (response.status===201) {
+        alert('Booking successful!');
+      } else {
+        alert('Booking failed!');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,7 +85,7 @@ const BookingForm = ({ img, location, text, guests, bedrooms, bathrooms, costPer
           />
         </div>
 
-        <button type="submit" className="submit-button">Submit</button>
+        <button onClick={performBooking}type="submit" className="submit-button">CONFIRM BOOKING</button>
       </form>
     </div>
   );

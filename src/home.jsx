@@ -24,7 +24,9 @@ return <style>{styles}</style>;
 
 function Home() {
   
-  const {listings, setlistings} = Store();
+  const {current ,listings, setlistings} = Store();
+  
+  
   useEffect(() => {
     const fetchData = async () => {
       var p = await axios.get('http://localhost:3000/listing');

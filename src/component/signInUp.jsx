@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './style/SigninUp.css';
+import {Store} from '../dataStorage.js';
+
 
 function SignInSignUp() { 
   const navigate = useNavigate();
+  const {current,setCurrent,setRoleUser} = Store();
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [isSignUp, setIsSignUp] = useState(true); // Toggle between Sign Up and Sign In
 
@@ -23,8 +26,7 @@ function SignInSignUp() {
           password: formData.password,
         });
         if (response.status === 201 || response.status === 204 || response.status === 200) {
-          const user = { email: formData.email, username: formData.username };
-          localStorage.setItem('user', JSON.stringify(user));
+          setIsSignUp(false);
         }
         else
         {
@@ -39,11 +41,13 @@ function SignInSignUp() {
           password: formData.password,
         });
         if(response.status === 200){
-
-           navigate('/Home');
+           setCurrent(response.data.user);
+           localStorage.setItem('token', response.data.token);
+           setRoleUser();
+           //navigate('/Home');
         }
         
-          alert(response.data.message);
+         // alert(response.data.message);
         
 
 
@@ -97,7 +101,7 @@ function SignInSignUp() {
         </button>
       </form>
       <button onClick={toggleMode} className="toggle-button">
-        {isSignUp ? 'Already have an account? Sign In' : 'Don’t have an account? Sign Up'}
+        {isSignUp ? 'Already have an account? Sign In' : 'Do`t have an account? Sign Up'}
       </button>
     </div>
   );
