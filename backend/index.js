@@ -95,14 +95,15 @@ mongoose.connect(URI);
       }
     });
     
-    app.post("/host", async (req, res) => {
+    app.post("/host/signup", async (req, res) => {
         
         try {
           // Create a new host using the request body
+          const hash=await bcrypt.hash(req.body.password,10);
           const host = new Host({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: hash,
           });
       
           // Save the host to the database
@@ -115,11 +116,18 @@ mongoose.connect(URI);
           res.status(400).json({ message: error.message });
         }
       });
-    app.get("/host", async (req, res) => {
+    app.post("/host/signin", async (req, res) => {
         try {
           //
           const host = await Host.findOne({email:req.body.email});
-     
+          if(!host)
+            return res.status(401).json({message:'User not found'});
+          const GivenPassword=req.body.password;
+          const match=await bcrypt.compare(GivenPassword,host.password);
+
+          if(!match)
+            return res.status(401).json({message:'Wrong password'});
+          console.log(host);
           res.status(200).json(host);
         } catch (error) {
           // Handle errors (e.g., database connection issues)
@@ -189,11 +197,16 @@ mongoose.connect(URI);
             location: req.body.location,
             price: req.body.price,
             image: req.body.image,
+            category: req.body.category,
+            bedrooms: req.body.bedrooms,
+            bathrooms: req.body.bathrooms,
+            guests: req.body.guests 
           });
       
           // Save the host to the database
           const savedlisting = await listing.save();
-      
+           console.log("listing");
+           console.log(savedlisting);
           // Respond with the saved host
           res.status(201).json(listing);
         } catch (error) {
@@ -216,11 +229,14 @@ mongoose.connect(URI);
         }
       });
       //get all listings using hostId
-      app.get("/listing/host/:hostId", async (req, res) => {
+      app.get("/listings/host/:hostId", async (req, res) => {
         try {
-          
+          console.log("fetch all listings");
           const hostIdGiven =req.params.hostId;
+          console.log(hostIdGiven);
           const listings = await Listing.find({hostId:hostIdGiven});
+          console.log(listings);
+          
           if(!listings)
               res.status(404).json({message:'could not find specified host'});
           res.status(200).json(listings);
@@ -324,7 +340,7 @@ mongoose.connect(URI);
         const allListings = await Listing.find({ hostId: hostId });
         const listingIds = allListings.map(listing => listing._id);
         const allBookings = await Booking.find({ listingId: { $in: listingIds } });
-    
+       
         res.status(200).json(allBookings);
       } catch (error) {
         res.status(500).json({ message: "Error fetching bookings", error });

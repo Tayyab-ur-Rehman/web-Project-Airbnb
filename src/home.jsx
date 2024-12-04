@@ -57,7 +57,7 @@ function Home() {
        }) }
        </div>
       <div>
-        <Footer></Footer>
+        <Footer key={1}></Footer>
       </div>
       
     

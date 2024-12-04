@@ -1,6 +1,6 @@
 /* Style for the card container */
 #box {
-    width: 350px;
+    width: 360px;
     margin: 20px;
     padding: 5px;
     background-color: #f9f9f9;
@@ -19,7 +19,7 @@
 
   /* Image styling */
   #box img {
-    width: 350px;
+    width: 340px;
     height: 300px;
     border-radius: 10px;
   }

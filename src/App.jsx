@@ -8,8 +8,10 @@ import {Navigate} from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import Profile from './profile.jsx';
-
-
+import HostHome from './hostHome.jsx';
+import HostList from './HostList.jsx';
+import HostSignInSignUp from './hostSigninup.jsx';
+import HostBooking from './HostBooking.jsx';  
 
 
 function App()
@@ -40,10 +42,13 @@ function App()
         } catch (error) {
           console.error(error);
         }
+        console.log(current);
+console.log(role);
       };
       
 return(
 <>
+
 <Router>
 <div>
     <Routes>
@@ -52,6 +57,11 @@ return(
     <Route exact path="/Detail/:id" element={<DetailPage />} />
     <Route exact path="/Booking/:id" element={<BookingPage />} />
     <Route exact path="/profile" element={<Profile />} />
+    <Route exact path="/hostHome" element={<HostHome />} />
+    <Route exact path="/hostList" element={<HostList />} />
+    <Route exact path="/host/login" element={<HostSignInSignUp />} />
+    <Route exact path="/host/booking" element={<HostBooking />} />
+
 
     </Routes>
 </div>

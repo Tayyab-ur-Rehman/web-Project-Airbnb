@@ -1,0 +1,86 @@
+/* General body styling */
+body {
+    background-color: #ffe4e1; /* Light pinkish background */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Scrollable container for the form */
+  form {
+    background-color: #ffffff; /* White background for the form */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 500px; /* Wider form */
+    max-height: 80vh; /* Limit height to 80% of the viewport */
+    overflow-y: auto; /* Enable vertical scrolling */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+#logo
+{
+    align-items: center;
+}  
+  
+  /* Input and select styling */
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    border-color: #ff6f61; /* Slightly darker pink */
+    outline: none;
+  }
+  
+  /* Button styling */
+  button {
+    background-color: #ff6f61; /* Light pinkish button */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #e65c50; /* Darker pink for hover */
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    form {
+      width: 90%; /* Adjust width for smaller screens */
+    }
+  }
+  
