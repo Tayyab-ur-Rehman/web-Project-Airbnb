@@ -4,19 +4,31 @@ import { Store } from './dataStorage.js';
 import { useNavigate } from 'react-router-dom';
 
 function HostHome() {
-  const { current, listings, setlistings } = Store();
+  const { current, listings = [], setlistings } = Store(); // Ensure listings is always an array
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get(`http://localhost:3000/listings/host/${current._id}`)
       .then((response) => {
-        setlistings(response.data);
+        console.log(response.data); // Log to check the response data
+        if (Array.isArray(response.data)) {
+          setlistings(response.data); // Update state only if response is an array
+        } else {
+          console.error('Response data is not an array');
+        }
       })
       .catch((error) => {
         console.error('There was an error fetching the listings!', error);
       });
   }, [current._id, setlistings]);
+
+  const handleRemoveListing =async  (listingId) => {
+    const response =await axios.delete(`http://localhost:3000/listings/host/${listingId}`);
+      console.log('Listing removed:', response.data);
+        // Remove the listing from local state after successful removal
+        setlistings(response.data)
+  };
 
   const styles = {
     container: {
@@ -118,7 +130,7 @@ function HostHome() {
       </nav>
 
       <div style={styles.listingsContainer}>
-        {listings.length === 0 ? (
+        {Array.isArray(listings) && listings.length === 0 ? (
           <p style={styles.detailText}>No listings available at the moment.</p>
         ) : (
           listings.map((listing) => (
@@ -139,6 +151,18 @@ function HostHome() {
                 <p style={styles.detailText}>Bathrooms: {listing.bathrooms}</p>
                 <p style={styles.detailText}>Guests: {listing.guests}</p>
                 <p style={styles.detailText}>Category: {listing.category}</p>
+                <button
+                  style={styles.button}
+                  onMouseOver={(e) =>
+                    (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)
+                  }
+                  onMouseOut={(e) =>
+                    (e.target.style.backgroundColor = styles.button.backgroundColor)
+                  }
+                  onClick={() => handleRemoveListing(listing._id)}
+                >
+                  Remove Listing
+                </button>
               </div>
             </div>
           ))
