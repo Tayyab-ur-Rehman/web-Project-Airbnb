@@ -4,7 +4,6 @@ import Footer from './component/footer.jsx';
 import Navbar from './component/navbar.jsx';
 import BookingForm from './component/BookingForm.jsx';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import {Store} from './dataStorage.js';
 
 const BookingPage=() =>{

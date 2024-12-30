@@ -4,27 +4,23 @@ import { Store } from './dataStorage.js';
 import { useNavigate } from 'react-router-dom';
 
 function HostHome() {
-  
-  const { current ,listings,setlistings} = Store();
+  const { current, listings, setlistings } = Store();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(current._id);
     axios
       .get(`http://localhost:3000/listings/host/${current._id}`)
       .then((response) => {
         setlistings(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error('There was an error fetching the listings!', error);
       });
-  }, [current._id]);
+  }, [current._id, setlistings]);
 
-  // Inline styles for the components
   const styles = {
     container: {
-      maxWidth: '1200px',
+      maxWidth: '1000px',
       margin: '20px auto',
       padding: '20px',
       backgroundColor: '#f9f9f9',
@@ -42,13 +38,20 @@ function HostHome() {
       padding: '10px 20px',
       fontSize: '14px',
       borderRadius: '4px',
+      margin: '10px',
       cursor: 'pointer',
     },
     buttonHover: {
       backgroundColor: '#0056b3',
     },
+    listingsContainer: {
+      maxHeight: '600px', // Restrict the height for scrollable container
+      overflowY: 'auto', // Enable vertical scrolling
+      padding: '10px',
+    },
     listing: {
       display: 'flex',
+      flexWrap: 'wrap',
       gap: '20px',
       alignItems: 'flex-start',
       marginBottom: '20px',
@@ -59,12 +62,13 @@ function HostHome() {
     },
     imageContainer: {
       flexShrink: 0,
-      maxWidth: '400px', // Limits the image width
+      maxWidth: '400px',
       overflow: 'hidden',
     },
     image: {
       width: '100%',
-      height: 'auto',
+      height: '200px', // Fix image height
+      objectFit: 'cover', // Prevent image distortion
       borderRadius: '8px',
     },
     details: {
@@ -84,9 +88,8 @@ function HostHome() {
 
   return (
     <div style={styles.container}>
-      <img id="logo"src='/airbnb.svg'  /> 
+      <img id="logo" src="/airbnb.svg" alt="Airbnb Logo" />
 
-      {/* Navbar with button to navigate to /hostList */}
       <nav style={styles.navbar}>
         <button
           style={styles.button}
@@ -114,32 +117,33 @@ function HostHome() {
         </button>
       </nav>
 
-      {/* Listings */}
-      {listings.length === 0 ? (
-        <p style={styles.detailText}>No listings available at the moment.</p>
-      ) : (
-        listings.map((listing) => (
-          <div key={listing._id} style={styles.listing}>
-            <div style={styles.imageContainer}>
-              <img
-                src={listing.image}
-                alt={listing.title}
-                style={styles.image}
-              />
+      <div style={styles.listingsContainer}>
+        {listings.length === 0 ? (
+          <p style={styles.detailText}>No listings available at the moment.</p>
+        ) : (
+          listings.map((listing) => (
+            <div key={listing._id} style={styles.listing}>
+              <div style={styles.imageContainer}>
+                <img
+                  src={listing.image}
+                  alt={listing.title}
+                  style={styles.image}
+                />
+              </div>
+              <div style={styles.details}>
+                <h2 style={styles.heading}>{listing.title}</h2>
+                <p style={styles.detailText}>Location: {listing.location}</p>
+                <p style={styles.detailText}>Price: ${listing.price}</p>
+                <p style={styles.detailText}>{listing.about}</p>
+                <p style={styles.detailText}>Bedrooms: {listing.bedrooms}</p>
+                <p style={styles.detailText}>Bathrooms: {listing.bathrooms}</p>
+                <p style={styles.detailText}>Guests: {listing.guests}</p>
+                <p style={styles.detailText}>Category: {listing.category}</p>
+              </div>
             </div>
-            <div style={styles.details}>
-              <h2 style={styles.heading}>{listing.title}</h2>
-              <p style={styles.detailText}>Location: {listing.location}</p>
-              <p style={styles.detailText}>Price: ${listing.price}</p>
-              <p style={styles.detailText}>{listing.about}</p>
-              <p style={styles.detailText}>Bedrooms: {listing.bedrooms}</p>
-              <p style={styles.detailText}>Bathrooms: {listing.bathrooms}</p>
-              <p style={styles.detailText}>Guests: {listing.guests}</p>
-              <p style={styles.detailText}>Category: {listing.category}</p>
-            </div>
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }
